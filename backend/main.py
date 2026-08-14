@@ -8,4 +8,8 @@ def raiz():
 
 @app.get("/produtos")
 def listar_produtos():
-    return [{"id": 1, "nome": "Arroz", "Valiade": "20/08/2027","Marca": "Tio Elias", "DataEntrada":"05/07/2026", "DataSaida": "None"}]
+    return [
+        {"id": 1, "nome": "Arroz", "Valiade": "20/08/2027","Marca": "Tio Elias", "DataEntrada":"05/07/2026", "DataSaida": "None"},
+
+        {"id": 1, "nome": "Feijão", "Valiade": "04/12/2026","Marca": "Tio Elias", "DataEntrada":"05/08/2025", "DataSaida": "None"}
+        ]
