@@ -1,81 +1,46 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/routes.dart';
+import 'package:provider/provider.dart';
 
-import '../models/usuario.dart';
-import '../routes.dart';
+
 import '../services/sessao_service.dart';
+import '../widgets/app_drawer.dart';
 
 
-class InicioScreen extends StatefulWidget {
-  const InicioScreen({super.key, required this.sessao});
-
-  final SessaoService sessao;
-
-  @override
-  State<InicioScreen> createState() => _InicioScreenState();
-}
-
-class _InicioScreenState extends State<InicioScreen> {
-  Usuario? usuario;
-
-  @override
-  void initState() {
-    super.initState();
-    carregar();
-  }
-
-  Future<void> carregar() async {
-     final quem = await widget.sessao.usuarioLogado();
-     if (!mounted) return;
-     setState(() {
-       usuario = quem;
-     });
-  }
-
-  void sair() {
-    widget.sessao.sair();
-    Navigator.pushNamedAndRemoveUntil(
-      context,
-      AppRoutes.login,
-      (rota) => false,
-    );
-  }
+class InicioScreen extends StatelessWidget {
+  const InicioScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final usuario = context.watch<SessaoService>().usuario!;
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Venda de camisas'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.logout),
-            tooltip: 'Sair',
-            onPressed: sair,
+      appBar: AppBar(title: const Text('Inicio')),
+      drawer: const AppDrawer(),
+      body: Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Icon(Icons.waving_hand, size: 56,),
+          const SizedBox(height: 16),
+          Text(
+            'Olá, ${usuario.nome}!',
+            style: const TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(usuario.email),
+          const SizedBox(height: 24),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pushNamed(context, AppRoutes.camisas);
+            },
+            child: const Text('Ver as camisas')
           ),
         ],
       ),
-  body: Center(
-    child: usuario == null
-    ? const CircularProgressIndicator()
-    : Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        const Icon(Icons.waving_hand, size: 56,),
-        const SizedBox(height: 16),
-        Text(
-          'Olá, ${usuario!.nome}!',
-          style: const TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        const SizedBox(height: 8),
-        Text(usuario!.email),
-        const SizedBox(height: 24),
-        const Text('A API reconheceu o sue token.'),
-      ],
-      )
     ),
     );
   }
-
 }

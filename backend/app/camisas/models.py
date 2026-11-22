@@ -16,5 +16,5 @@ class Camisa(Base):
     temporada = Column(String(10), nullable=False)
     cor = Column(String(20), nullable=False)
     descricao = Column(String(500), nullable=False)
-    pedido_id = Column(Integer, ForeignKey("CamisaPedido.id", name="fk_camisa_camisaPedido"))
+    caisa_pedido_id = Column(Integer, ForeignKey("CamisaPedido.id", name="fk_camisa_camisaPedido"))
     pedido = relationship("CamisaPedido", back_populates="camisas")
